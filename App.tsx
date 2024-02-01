@@ -1,117 +1,58 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {ScrollView, StatusBar, StyleSheet} from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {Controls, Header} from './src/components';
+import {NavigationContainer} from '@react-navigation/native';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import {AllTunesList, FavoritesTunesList} from './src/screens';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+import {Provider} from 'react-redux';
+import {store as musicStore} from './src/store/store';
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+const Tab = createMaterialTopTabNavigator();
+
+function App(): JSX.Element {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+    <Provider store={musicStore}>
+      <StatusBar barStyle="light-content" backgroundColor={'#020617'} />
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
+      <ScrollView style={styles.container}>
         <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
+        <Controls />
       </ScrollView>
-    </SafeAreaView>
+
+      <NavigationContainer>
+        <Tab.Navigator
+          style={styles.screenContainer}
+          screenOptions={{
+            lazy: false,
+            tabBarStyle: styles.tabBarStyle,
+            tabBarLabelStyle: styles.tabBarLabelStyle,
+          }}>
+          <Tab.Screen name="All" component={AllTunesList} />
+          <Tab.Screen name="Favorites" component={FavoritesTunesList} />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flexGrow: 0,
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  screenContainer: {
+    flexGrow: 1,
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
+  tabBarStyle: {
+    backgroundColor: '#020617',
+    borderTopWidth: 0.5,
+    borderBottomWidth: 0.5,
+    padding: 8,
+    borderColor: '#FFF',
   },
-  highlight: {
-    fontWeight: '700',
+  tabBarLabelStyle: {
+    color: '#FFF',
   },
 });
 
