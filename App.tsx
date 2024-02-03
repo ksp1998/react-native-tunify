@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {ScrollView, StatusBar, StyleSheet} from 'react-native';
 
 import {Controls, Header} from './src/components';
@@ -8,10 +8,15 @@ import {AllTunesList, FavoritesTunesList} from './src/screens';
 
 import {Provider} from 'react-redux';
 import {store as musicStore} from './src/store/store';
+import {createFavoritesTable} from './src/utils/db';
 
 const Tab = createMaterialTopTabNavigator();
 
 function App(): JSX.Element {
+  useEffect(() => {
+    createFavoritesTable();
+  }, []);
+
   return (
     <Provider store={musicStore}>
       <StatusBar barStyle="light-content" backgroundColor={'#020617'} />

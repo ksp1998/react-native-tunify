@@ -13,17 +13,21 @@ const Controls = (): JSX.Element => {
   const playPreviousAudio = useCallback(async () => {
     await TrackPlayer.skipToPrevious();
     TrackPlayer.play();
-    TrackPlayer.getActiveTrack().then(track =>
-      ToastAndroid.show(`${track?.title}`, ToastAndroid.SHORT),
-    );
+    TrackPlayer.getActiveTrack()
+      .then(track => ToastAndroid.show(`${track?.title}`, ToastAndroid.SHORT))
+      .catch((error: any) =>
+        ToastAndroid.show(`${error?.message}`, ToastAndroid.SHORT),
+      );
   }, []);
 
   const playNextAudio = useCallback(async () => {
     await TrackPlayer.skipToNext();
     TrackPlayer.play();
-    TrackPlayer.getActiveTrack().then(track =>
-      ToastAndroid.show(`${track?.title}`, ToastAndroid.SHORT),
-    );
+    TrackPlayer.getActiveTrack()
+      .then(track => ToastAndroid.show(`${track?.title}`, ToastAndroid.SHORT))
+      .catch((error: any) =>
+        ToastAndroid.show(`${error?.message}`, ToastAndroid.SHORT),
+      );
   }, []);
 
   return (

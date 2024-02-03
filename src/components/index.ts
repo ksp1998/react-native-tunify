@@ -1,8 +1,8 @@
 import Controls from './Controls';
 import Header from './Header';
 import SliderControl from './SliderControl';
-import AudioCard from './AudioCard';
-import AudiosList from './AudiosList';
+import TuneCard from './TuneCard';
+import TunesList from './TunesList';
 import LoopControl from './LoopControl';
 import PlaybackControl from './PlaybackControl';
 
@@ -10,8 +10,8 @@ export {
   Controls,
   Header,
   SliderControl,
-  AudioCard,
-  AudiosList,
+  TuneCard,
+  TunesList,
   LoopControl,
   PlaybackControl,
 };

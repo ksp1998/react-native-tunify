@@ -1,23 +1,37 @@
-import React from 'react';
-import {AudiosList} from '../components';
-import {StyleSheet, Text} from 'react-native';
+import React, {useEffect} from 'react';
+import {TunesList} from '../components';
+import {useAudioFiles} from '../utils/hooks/useAudioFiles';
+import db from '../utils/db';
+import {useDispatch} from 'react-redux';
+import {addFavorites} from '../store/audioSlice';
 
 const FavoritesTunesList = (): JSX.Element => {
-  return (
-    <>
-      <Text style={styles.text}>In development</Text>
-      <AudiosList tunes={[]} />
-    </>
-  );
-};
+  const {favorites} = useAudioFiles();
+  const dispatch = useDispatch();
 
-const styles = StyleSheet.create({
-  text: {
-    textAlign: 'center',
-    color: '#FFF',
-    fontSize: 24,
-    padding: 16,
-  },
-});
+  useEffect(() => {
+    try {
+      db.transaction((tx: any) => {
+        tx.executeSql(
+          'SELECT tune FROM FAVORITES;',
+          [],
+          (_: any, results: any) => {
+            if (results.rows.length) {
+              const dbFavorites = results.rows
+                .raw()
+                .map((item: any) => JSON.parse(item.tune));
+              dispatch(addFavorites(dbFavorites));
+            }
+          },
+          (e: Error) => console.log('Error while fetching favorites! => ', e),
+        );
+      });
+    } catch (error: any) {
+      console.log('SQL Error getFavorites() => ', error);
+    }
+  }, [dispatch]);
+
+  return <TunesList tunes={favorites} />;
+};
 
 export default FavoritesTunesList;

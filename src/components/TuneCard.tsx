@@ -6,33 +6,36 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 interface Props extends PropsWithChildren {
   tune: Song;
   onChangeAudio: () => void;
+  onOptions: () => void;
 }
 
-const TuneCard = ({tune, onChangeAudio}: Props) => {
+const TuneCard = ({tune, onChangeAudio, onOptions}: Props) => {
   return (
-    <Pressable
-      style={styles.container}
-      android_ripple={{color: '#FFFFFF22'}}
-      onPress={onChangeAudio}
-      onLongPress={() => {}}>
-      <FontAwesome
-        name="music"
-        color="#FFF"
-        size={28}
-        style={styles.musicIcon}
-      />
-      <View style={styles.detailsContainer}>
-        <Text style={styles.titleText} numberOfLines={1}>
-          {tune?.title}
-        </Text>
-        <View style={styles.metaContainer}>
-          <Text style={styles.artistsText}>{tune.artist}</Text>
-          <Text style={styles.duration}>
-            {new Date(tune.duration).toISOString().substring(15, 19)}
+    <>
+      <Pressable
+        style={styles.container}
+        android_ripple={{color: '#FFFFFF22'}}
+        onPress={onChangeAudio}
+        onLongPress={onOptions}>
+        <FontAwesome
+          name="music"
+          color="#FFF"
+          size={28}
+          style={styles.musicIcon}
+        />
+        <View style={styles.detailsContainer}>
+          <Text style={styles.titleText} numberOfLines={1}>
+            {tune?.title}
           </Text>
+          <View style={styles.metaContainer}>
+            <Text style={styles.artistsText}>{tune.artist}</Text>
+            <Text style={styles.duration}>
+              {new Date(tune.duration).toISOString().substring(15, 19)}
+            </Text>
+          </View>
         </View>
-      </View>
-    </Pressable>
+      </Pressable>
+    </>
   );
 };
 
